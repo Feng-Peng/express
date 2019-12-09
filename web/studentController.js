@@ -20,9 +20,24 @@ function insertStudent(request, response) {
     });
 }
 
+function queryStudentByStuNum(request, response) {
+    const param = url.parse(request.url, true).query;
+    requestDao.queryStudentByStuNum(param.stuNum, function (result) {
+        if (result && result.length > 0 && result[0].pwd == param.pwd) {
+            // 写cookie
+            response.cookie('id', param.id);
+            // 跳转页面
+            response.redirect('/api/queryAllStudent');
+        } else {
+            response.redirect('/loginError.html');
+        }
+    })
+}
+
 // 创建的接口
 path.set('/api/queryAllStudent', queryAllStudent);
 path.set('/api/insertStudent', insertStudent);
+path.set('/login', queryStudentByStuNum);
 
 // path中一个接口对应一个处理函数（使用的函数来自于dao文件夹）
 module.exports.path = path;

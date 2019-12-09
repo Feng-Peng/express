@@ -32,7 +32,24 @@ function queryAllStudent(success) {
     conn.end();
 }
 
+function queryStudentByStuNum(stuNum, success) {
+    const conn = dbutil.createConnect();
+    const sql = 'select * from student where stu_num=?';
+    conn.connect();
+    const param = [stuNum];
+    conn.query(sql, param, function (error, result) {
+        if (error === null) {
+            // 将查询出来的数据放到回调函数中
+            success(result);
+        } else {
+            throw new Error(error);
+        }
+    })
+    conn.end();
+}
+
 module.exports = {
     "queryAllStudent": queryAllStudent,
-    "insertStudent": insertStudent
+    "insertStudent": insertStudent,
+    "queryStudentByStuNum": queryStudentByStuNum
 }
