@@ -21,8 +21,8 @@ function insertStudent(request, response) {
 }
 
 // 创建的接口
-path.set('/queryAllStudent', queryAllStudent);
-path.set('/insertStudent', insertStudent);
+path.set('/api/queryAllStudent', queryAllStudent);
+path.set('/api/insertStudent', insertStudent);
 
 // path中一个接口对应一个处理函数（使用的函数来自于dao文件夹）
 module.exports.path = path;
