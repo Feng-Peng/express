@@ -1,6 +1,7 @@
-// 该文件用于创建接口供外界访问
+// 该文件用于创建接口供外界访问（使用的函数来自于dao文件夹）
 const requestDao = require('../dao/studentDao');
 const path = new Map();
+const url = require("url");
 
 function queryAllStudent(request, response) {
     requestDao.queryAllStudent(function (result) {
@@ -9,8 +10,19 @@ function queryAllStudent(request, response) {
         response.end();
     })
 }
+
+function insertStudent(request, response) {
+    const param = url.parse(request.url, true).query;
+    requestDao.insertStudent(param.stuNum, param.name, param.age, param.stuClass, param.pwd, function () {
+        response.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        response.write('添加成功');
+        response.end();
+    });
+}
+
 // 创建的接口
 path.set('/queryAllStudent', queryAllStudent);
+path.set('/insertStudent', insertStudent);
 
 // path中一个接口对应一个处理函数（使用的函数来自于dao文件夹）
 module.exports.path = path;

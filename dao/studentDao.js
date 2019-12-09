@@ -1,13 +1,28 @@
 // 该文件用于查询数据库中所有的学生数据
 const dbutil = require('./dbutil');
 
+function insertStudent(stuNum, name, age, stuClass, pwd, success) {
+    const conn = dbutil.createConnect();
+    const sql = 'insert into student(stu_num, name, age, class, pwd) values (?,?,?,?,?)';
+    conn.connect();
+    const param = [stuNum, name, age, stuClass, pwd];
+    conn.query(sql, param, function (error, result) {
+        if (error === null) {
+            // 将查询出来的数据放到回调函数中
+            success(result);
+        } else {
+            throw new Error(error);
+        }
+    })
+    conn.end();
+}
+
 function queryAllStudent(success) {
     const conn = dbutil.createConnect();
     const sql = 'select * from student';
     conn.connect();
     conn.query(sql, function (error, result) {
         if (error === null) {
-            console.log(result);
             // 将查询出来的数据放到回调函数中
             success(result);
         } else {
@@ -18,5 +33,6 @@ function queryAllStudent(success) {
 }
 
 module.exports = {
-    "queryAllStudent": queryAllStudent
+    "queryAllStudent": queryAllStudent,
+    "insertStudent": insertStudent
 }
