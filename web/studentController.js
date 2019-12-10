@@ -2,6 +2,7 @@
 const requestDao = require('../dao/studentDao');
 const path = new Map();
 const url = require("url");
+const fs = require("fs");
 
 function queryAllStudent(request, response) {
     requestDao.queryAllStudent(function (result) {
@@ -34,10 +35,24 @@ function queryStudentByStuNum(request, response) {
     })
 }
 
+function getPic(request, response) {
+    const param = url.parse(request.url, true).query;
+    try {
+        const data = fs.readFileSync(param.path);
+        response.writeHead(200);
+        response.write(data);
+        response.end();
+    } catch (e) {
+        response.writeHead(404);
+        response.end();
+    }
+}
+
 // 创建的接口
 path.set('/api/queryAllStudent', queryAllStudent);
 path.set('/api/insertStudent', insertStudent);
 path.set('/login', queryStudentByStuNum);
+path.set('/getPic', getPic);
 
 // path中一个接口对应一个处理函数（使用的函数来自于dao文件夹）
 module.exports.path = path;

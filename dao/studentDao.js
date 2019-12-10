@@ -1,6 +1,6 @@
-// 该文件用于查询数据库中所有的学生数据
+// 该文件用于提供对数据库操作的各种方法
 const dbutil = require('./dbutil');
-
+// 插入学生数据
 function insertStudent(stuNum, name, age, stuClass, pwd, success) {
     const conn = dbutil.createConnect();
     const sql = 'insert into student(stu_num, name, age, class, pwd) values (?,?,?,?,?)';
@@ -16,7 +16,7 @@ function insertStudent(stuNum, name, age, stuClass, pwd, success) {
     })
     conn.end();
 }
-
+// 查询所有学生
 function queryAllStudent(success) {
     const conn = dbutil.createConnect();
     const sql = 'select * from student';
@@ -31,7 +31,7 @@ function queryAllStudent(success) {
     })
     conn.end();
 }
-
+// 根据学号查询学学生
 function queryStudentByStuNum(stuNum, success) {
     const conn = dbutil.createConnect();
     const sql = 'select * from student where stu_num=?';

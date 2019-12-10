@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function submitMsg() {
+            const file = document.getElementById('file').files[0];
+            const name = document.getElementById('username').value;
+            const form = new FormData();
+            form.append('myFile', file);
+            form.append('name', name);
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+            xhr.onload = function () {
+                alert('上传成功');
+            }
+            xhr.onreadystatechange = () => {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    const result = xhr.responseText;
+                    const pic = document.getElementById('pic');
+                    pic.src = '/getPic?path=' + JSON.parse(result).path;
+                    const download = document.getElementById('download');
+                    download.href = '/getPic?path=' + JSON.parse(result).path;
+                }
+            }
+            xhr.send(form);
+        }
+    </script>
+</head>
+
+<body>
+    <input type="text" id="username" placeholder="输入用户名">
+    <input type="file" id="file">
+    <button type="submit" onclick="submitMsg()">提交</button>
+
+    <img src="#" id="pic">
+    <!-- download属性添加的是什么，下载的文件名就是什么 -->
+    <a href="#" id="download" download="pic.png">点击此处下载</a>
+</body>
+
+</html>
