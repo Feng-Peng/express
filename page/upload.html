@@ -22,6 +22,7 @@
                 if (xhr.status == 200 && xhr.readyState == 4) {
                     const result = xhr.responseText;
                     const pic = document.getElementById('pic');
+                    // 通过接口的方式也可以改变img标签的src属性，接口将需要的图片资源返回
                     pic.src = '/getPic?path=' + JSON.parse(result).path;
                     const download = document.getElementById('download');
                     download.href = '/getPic?path=' + JSON.parse(result).path;
